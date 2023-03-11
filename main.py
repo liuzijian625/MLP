@@ -12,7 +12,7 @@ def sigmoid_gradient(x):
     return x * (1 - x)
 
 
-def linear(data,  w, b):
+def linear(data, w, b):
     result = b + (w * data).sum()
     return sigmoid(result)
 
@@ -63,9 +63,9 @@ class OneLayerMLP:
         self.b_M = self.learning_rate * b_gradient + self.momentum_constant * self.b_M
         for i in range(self.hidden_layer):
             self.w[i] = self.learning_rate * sigmoid_gradient(results[-2][i]) * results[-3][0:2] * b_gradient * (
-            w_m[i]) + self.momentum_constant * self.w[i]
+                w_m[i]) + self.momentum_constant * self.w[i]
             self.b[i] = self.learning_rate * sigmoid_gradient(results[-2][i]) * b_gradient * (
-            w_m[i]) + self.momentum_constant * self.b[i]
+                w_m[i]) + self.momentum_constant * self.b[i]
 
     def train(self):
         self.acc_train = 0
