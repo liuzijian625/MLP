@@ -34,7 +34,7 @@ class OneLayerMLP:
         self.input_layer = 2
         self.hidden_layer = 32
         self.output_layer = 1
-        self.train_num = 5000
+        self.train_num = 10000
         self.w = np.random.random((self.hidden_layer, self.input_layer)) / 10
         self.b = np.zeros(self.hidden_layer)
         self.w_M = np.random.random(self.hidden_layer) / 10
@@ -175,7 +175,7 @@ class OneLayerMLP:
 if __name__ == '__main__':
     train_data = np.loadtxt('two_spiral_train_data.txt')
     test_data = np.loadtxt('two_spiral_test_data.txt')
-    learning_rate = 1
+    learning_rate = 0.5
     momentum_constant = 1
     MLP = OneLayerMLP(train_data, test_data, learning_rate, momentum_constant)
     MLP.train()
