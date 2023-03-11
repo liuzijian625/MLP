@@ -13,12 +13,16 @@ def sigmoid_gradient(x):
 
 
 def linear(data, u, w, b):
-    result=b+(w*data).sum()
+    result = b + (w * data).sum()
     return sigmoid(result)
 
 
 class OneLayerMLP:
     def __init__(self, train_data, test_data, learning_rate, momentum_constant):
+        self.b_M_max_train = None
+        self.w_M_max_train = None
+        self.b_max_train = None
+        self.w_max_train = None
         self.j_train = None
         self.acc_train = None
         self.j_test = None
@@ -27,46 +31,46 @@ class OneLayerMLP:
         self.test_data = test_data
         self.learning_rate = learning_rate
         self.momentum_constant = momentum_constant
-        self.input_layer=2
-        self.hidden_layer=32
-        self.output_layer=1
-        self.train_num=1000
-        self.w = np.random.random((self.hidden_layer, self.input_layer))/10
+        self.input_layer = 2
+        self.hidden_layer = 32
+        self.output_layer = 1
+        self.train_num = 5000
+        self.w = np.random.random((self.hidden_layer, self.input_layer)) / 10
         self.b = np.zeros(self.hidden_layer)
-        self.w_M = np.random.random(self.hidden_layer)/10
+        self.w_M = np.random.random(self.hidden_layer) / 10
         self.b_M = np.zeros(self.output_layer)
-        self.losses=[]
-        self.accuracies=[]
-        self.train_order=[]
+        self.losses = []
+        self.accuracies = []
+        self.train_order = []
         for i in range(self.train_num):
-            self.train_order.append(i+1)
+            self.train_order.append(i + 1)
 
     def forward(self, data):
         results = [data]
         result = []
         for i in range(self.hidden_layer):
-            result.append(linear(data[0:2],  self.w[i], self.b[i]))
+            result.append(linear(data[0:2], self.w[i], self.b[i]))
         results.append(np.array(result))
-        result = linear(result,self.w_M, self.b_M)
+        result = linear(result, self.w_M, self.b_M)
         results.append(result)
         return results
 
     def backward(self, e, results):
         b_gradient = e * sigmoid_gradient(results[-1])
-
         w_m = self.w_M + 0
-
         self.w_M = self.learning_rate * e * sigmoid_gradient(results[-1]) * results[
             -2] + self.momentum_constant * self.w_M
         self.b_M = self.learning_rate * b_gradient + self.momentum_constant * self.b_M
         for i in range(self.hidden_layer):
-            self.w[i] = self.learning_rate * sigmoid_gradient(results[-2][i]) * results[-3][0:2] * b_gradient * (w_m[i]) + self.momentum_constant *self.w[i]
-            self.b[i] = self.learning_rate * sigmoid_gradient(results[-2][i]) * b_gradient *  (w_m[i])+ self.momentum_constant * self.b[i]
+            self.w[i] = self.learning_rate * sigmoid_gradient(results[-2][i]) * results[-3][0:2] * b_gradient * (
+            w_m[i]) + self.momentum_constant * self.w[i]
+            self.b[i] = self.learning_rate * sigmoid_gradient(results[-2][i]) * b_gradient * (
+            w_m[i]) + self.momentum_constant * self.b[i]
 
     def train(self):
         self.acc_train = 0
         for j in tqdm(range(self.train_num)):
-            error_sum=0
+            error_sum = 0
             '''print("第" + str(j + 1) + "轮训练")'''
             i = 1
             for data in self.train_data:
@@ -74,7 +78,7 @@ class OneLayerMLP:
                 results = self.forward(data)
                 e = data[2] - results[-1]
                 error = 0.5 * e * e
-                error_sum=error_sum+error
+                error_sum = error_sum + error
                 self.backward(e, results)
                 '''print("error:" + str(error))'''
                 i = i + 1
@@ -159,7 +163,7 @@ class OneLayerMLP:
 
     def loss_change(self):
         plt.clf()
-        plt.plot(self.train_order,self.losses)
+        plt.plot(self.train_order, self.losses)
         plt.show()
 
     def accuracy_change(self):
@@ -177,8 +181,7 @@ if __name__ == '__main__':
     MLP.train()
     MLP.decision_boundary()
     '''MLP.test_prep()'''
-    acc=MLP.test(test_data)
+    acc = MLP.test(test_data)
     print("测试集准确率：" + str(acc) + "%")
     MLP.loss_change()
     MLP.accuracy_change()
-
