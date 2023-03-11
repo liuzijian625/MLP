@@ -12,7 +12,7 @@ def sigmoid_gradient(x):
     return x * (1 - x)
 
 
-def linear(data, u, w, b):
+def linear(data,  w, b):
     result = b + (w * data).sum()
     return sigmoid(result)
 
@@ -175,7 +175,7 @@ class OneLayerMLP:
 if __name__ == '__main__':
     train_data = np.loadtxt('two_spiral_train_data.txt')
     test_data = np.loadtxt('two_spiral_test_data.txt')
-    learning_rate = 0.1
+    learning_rate = 1
     momentum_constant = 1
     MLP = OneLayerMLP(train_data, test_data, learning_rate, momentum_constant)
     MLP.train()
