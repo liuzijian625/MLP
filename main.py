@@ -175,7 +175,7 @@ class OneLayerMLP:
 if __name__ == '__main__':
     train_data = np.loadtxt('two_spiral_train_data.txt')
     test_data = np.loadtxt('two_spiral_test_data.txt')
-    learning_rate = 0.5
+    learning_rate = 0.01
     momentum_constant = 1
     MLP = OneLayerMLP(train_data, test_data, learning_rate, momentum_constant)
     MLP.train()
