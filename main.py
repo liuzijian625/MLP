@@ -138,12 +138,12 @@ class OneLayerMLP:
         plt.contourf(xx, yy, zz, cmap=plt.cm.Spectral)
         for data in train_data:
             if data[2] == 1:
-                plt.plot(data[0], data[1], color='black', marker='o')
+                plt.plot(data[0], data[1], color='blue', marker='o')
             else:
                 plt.plot(data[0], data[1], color='red', marker='o')
         for data in test_data:
             if data[2] == 1:
-                plt.plot(data[0], data[1], color='black', marker='x')
+                plt.plot(data[0], data[1], color='blue', marker='x')
             else:
                 plt.plot(data[0], data[1], color='red', marker='x')
         plt.title("Decision Boundary")
